@@ -13,6 +13,8 @@ export function createMessage(pytestResult: any): string {
 
   const lineOfText = newString.split('\n')
   let newMessage = '### :white_check_mark: Result of Pytest Coverage\n'
+  newMessage +=
+    '| Name | Stmts | Miss | Cover |\n| :--- | ----: | ---: | ----: |\n'
   for (const i in lineOfText) {
     if (lineOfText[i] !== undefined) {
       const tabOfText = lineOfText[i].split(/\s+/)
@@ -23,7 +25,7 @@ export function createMessage(pytestResult: any): string {
           delete tabOfText[t]
         }
       }
-      if (tabOfText[3] !== undefined) {
+      if (tabOfText[3] !== undefined && tabOfText[1] !== 'Stmts') {
         newMessage += `${
           tabOfText[0] + tabOfText[1] + tabOfText[2] + tabOfText[3]
         }|\n`
