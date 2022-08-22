@@ -1,6 +1,6 @@
 name: 'Pytest Coverage Commentator'
-description: 'A Github action to comments a Pytest Coverage on PR.'
-author: 'Kuncoro Wicaksono'
+description: 'A Github action to comments a Pytest Coverage on PR using output file.'
+author: 'Emin Mastizada'
 branding:
   icon: 'message-circle'  
   color: 'yellow'

@@ -3,7 +3,7 @@ require('./sourcemap-register.js');module.exports =
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 109:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
@@ -16,11 +16,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createMessage = void 0;
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/prefer-includes */
 /* eslint-disable @typescript-eslint/no-for-in-array */
 const core = __webpack_require__(186);
 const github = __webpack_require__(438);
@@ -29,49 +30,26 @@ function createMessage(pytestResult) {
     const file = fs.readFileSync(pytestResult);
     const newString = new String(file);
     const lineOfText = newString.split('\n');
-    let startKey = '0';
     let newMessage = '### :white_check_mark: Result of Pytest Coverage\n';
-    let lastMessage = '';
-    let delLine = '';
     for (const i in lineOfText) {
-        if (lineOfText[i].indexOf('coverage: platform') >= 0) {
-            startKey = i;
-            newMessage += `\n${lineOfText[i]}\n`;
-            delete lineOfText[i];
-            const iNext = parseInt(i) + 1;
-            delLine = iNext.toString();
-            newMessage +=
-                '| Name | Stmts | Miss | Cover |\n| :--- | ----: | ---: | ----: |\n';
-        }
-        if (i === delLine) {
-            delete lineOfText[i];
-        }
-        if (startKey !== '0' && lineOfText[i] !== undefined) {
-            if (lineOfText[i].indexOf('---------------------------------------------------------') >= 0) {
-                delete lineOfText[i];
-            }
-            else if (lineOfText[i].indexOf('passed in') >= 0) {
-                lastMessage += `\n~${lineOfText[i].replace(/=/g, '')}~`;
-                delete lineOfText[i];
-            }
-            if (lineOfText[i] !== undefined) {
-                const tabOfText = lineOfText[i].split(/\s+/);
-                for (const t in tabOfText) {
-                    if (tabOfText[t] !== '') {
-                        tabOfText[t] = `| ${tabOfText[t]}`;
-                    }
-                    else {
-                        delete tabOfText[t];
-                    }
+        if (lineOfText[i] !== undefined) {
+            const tabOfText = lineOfText[i].split(/\s+/);
+            for (const t in tabOfText) {
+                if (tabOfText[t] !== '') {
+                    tabOfText[t] = `| ${tabOfText[t]}`;
                 }
-                if (tabOfText[3] !== undefined) {
-                    newMessage += `${tabOfText[0] + tabOfText[1] + tabOfText[2] + tabOfText[3]}|\n`;
+                else {
+                    delete tabOfText[t];
                 }
+            }
+            if (tabOfText[3] !== undefined) {
+                newMessage += `${tabOfText[0] + tabOfText[1] + tabOfText[2] + tabOfText[3]}|\n`;
             }
         }
     }
-    return newMessage + lastMessage;
+    return newMessage;
 }
+exports.createMessage = createMessage;
 function run() {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {

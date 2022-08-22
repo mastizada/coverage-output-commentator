@@ -2,6 +2,10 @@
 
 A Github action to comments a Pytest Coverage on PR. Please note: this action only available on pull request.
 
+## Difference from original repository
+
+This action does not process an actual output of coverage report, instead, it only comments whatever in the file.
+
 ## GitHub Action
 
 The following is an example GitHub Action workflow that uses the Pytest Coverage Commentator to extract the coverage to comment at pull request. Here is an example setup of this action:
@@ -31,8 +35,10 @@ jobs:
     - name: Build coverage file
       run: |
         pytest --cache-clear --cov=app test/ > pytest-coverage.txt
+    - name: Reduce coverage info
+      run: cat pytest-coverage.txt | grep TOTAL | tee pytest-coverage.txt
     - name: Comment coverage
-      uses: coroo/pytest-coverage-commentator@v1.0.2
+      uses: mastizada/coverage-output-commentator@v0.1.0
 ```
 
 ## Action Input
@@ -47,7 +53,7 @@ You can see the action block with all variables as below:
 
 ```yml
     - name: pytest-coverage-commentator
-      uses: coroo/pytest-coverage-commentator@v1.0.2
+      uses: mastizada/coverage-output-commentator@v0.1.0
       with:
         pytest-coverage: pytest-coverage.txt
 ```
